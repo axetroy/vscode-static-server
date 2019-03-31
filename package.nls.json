@@ -1,6 +1,7 @@
 {
   "ext.config.title": "Static Server Configuration",
   "ext.config.port": "The port that the static resource server listens on.\nif `empty`, it will use a random available port.",
+  "ext.config.download": "Whether to download file",
   "cmd.static-server.serve": "Start Static Server",
   "cmd.static-server.close": "Close Static Server"
 }

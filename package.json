@@ -91,6 +91,11 @@
           "type": "integer",
           "default": 1337,
           "markdownDescription": "%ext.config.port%"
+        },
+        "static-server.download": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%ext.config.download%"
         }
       }
     }
@@ -115,6 +120,7 @@
     "vscode": "^1.1.30"
   },
   "dependencies": {
+    "content-disposition": "^0.5.3",
     "get-port": "^4.2.0",
     "internal-ip": "^4.2.0",
     "static-server": "^2.2.1"

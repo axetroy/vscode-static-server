@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 const StaticServer = require("static-server");
 const getPort = require("get-port");
 const ip = require("internal-ip");
+const contentDisposition = require("content-disposition");
 
 let currentServer: any = null;
 let statusbar: vscode.StatusBarItem;
@@ -18,7 +19,7 @@ async function updateContext(val: string | void) {
 export async function activate(context: vscode.ExtensionContext) {
   statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
-  async function close () {
+  async function close() {
     if (currentServer) {
       currentServer.stop();
       currentServer = null;
@@ -35,10 +36,10 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "static-server.serve",
       async (uri: vscode.Uri) => {
-        const port =
-          vscode.workspace.getConfiguration("static-server").get("port") ||
-          (await getPort()) ||
-          1337;
+        const configuration = vscode.workspace.getConfiguration(
+          "static-server"
+        );
+        const port = configuration.get("port") || (await getPort()) || 1337;
         const host = await ip.v4();
 
         const server = new StaticServer({
@@ -54,6 +55,12 @@ export async function activate(context: vscode.ExtensionContext) {
           server.start((err: Error) => {
             err ? reject(err) : resolve();
           });
+        });
+
+        server.on("request", (req: any, res: any) => {
+          if (configuration.get("download")) {
+            res.setHeader("Content-disposition", contentDisposition(req.path));
+          }
         });
 
         await updateContext(uri.fsPath);
