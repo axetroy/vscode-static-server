@@ -26,9 +26,9 @@ export async function activate(context: vscode.ExtensionContext) {
     if (currentServer) {
       currentServer.stop();
       currentServer = null;
-      statusbar.hide();
-      await updateContext(undefined);
     }
+    statusbar.hide();
+    await updateContext(undefined);
   }
 
   context.subscriptions.push(
