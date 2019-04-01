@@ -2,6 +2,9 @@
   "ext.config.title": "靜態服務器配置",
   "ext.config.port": "靜態資源服務器偵聽的端口。\n如果為`空`，它將使用隨機的可用端口。",
   "ext.config.download": "是否下載文件",
+  "status.server.on": "靜態服務器端口",
+  "info.server.on": "已為 '{0}' 開啟靜態服務器 '{1}'。",
+  "status.server.tooltip": "打開 `{0}` 訪問靜態服務器。點擊狀態欄關閉服務器。",
   "cmd.static-server.serve": "啟動靜態服務器",
   "cmd.static-server.close": "關閉靜態服務器"
 }

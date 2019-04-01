@@ -1,5 +1,7 @@
 "use strict";
 import * as vscode from "vscode";
+import * as path from "path";
+import { init, localize } from "vscode-nls-i18n";
 const StaticServer = require("static-server");
 const getPort = require("get-port");
 const ip = require("internal-ip");
@@ -17,6 +19,7 @@ async function updateContext(val: string | void) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
+  init(context);
   statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
   async function close() {
@@ -65,14 +68,29 @@ export async function activate(context: vscode.ExtensionContext) {
 
         await updateContext(uri.fsPath);
 
+        const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
+
+        if (!workspaceFolder) {
+          return;
+        }
+
+        const relativePath = path.relative(
+          workspaceFolder.uri.fsPath,
+          uri.fsPath
+        );
+
+        const fullUrl = "http://" + host + ":" + port;
+
         vscode.window.showInformationMessage(
-          `Static server on ${host}:${port} for folder '${uri.fsPath}'.`
+          localize("info.server.on", relativePath, fullUrl)
         );
 
         currentServer = server;
 
-        statusbar.text = `$(radio-tower) Static on port: ${port}`;
-        statusbar.tooltip = `Open \`${host}:${port}\` to access static server. Click the status bar to close.`;
+        statusbar.text = `$(radio-tower) ${localize(
+          "status.server.on"
+        )}: ${port}`;
+        statusbar.tooltip = localize("status.server.tooltip", fullUrl);
         statusbar.show();
         statusbar.command = "static-server.close";
       }

@@ -2,6 +2,9 @@
   "ext.config.title": "静态服务器配置",
   "ext.config.port": "静态资源服务器侦听的端口。\n如果为`空`，它将使用随机的可用端口。",
   "ext.config.download": "是否下载文件",
+  "status.server.on": "静态服务器端口",
+  "info.server.on": "已为 '{0}' 开启静态服务器 '{1}'。",
+  "status.server.tooltip": "打开 `{0}` 访问静态服务器. 点击状态栏关闭服务器.",
   "cmd.static-server.serve": "启动静态服务器",
   "cmd.static-server.close": "关闭静态服务器"
 }
