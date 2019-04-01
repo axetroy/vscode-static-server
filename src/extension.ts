@@ -18,6 +18,11 @@ async function updateContext(val: string | void) {
   );
 }
 
+enum Commands {
+  Start = "static-server.serve",
+  Close = "static-server.close"
+}
+
 export async function activate(context: vscode.ExtensionContext) {
   init(context);
   statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
@@ -32,69 +37,64 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("static-server.close", close)
+    vscode.commands.registerCommand(Commands.Close, close)
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "static-server.serve",
-      async (uri: vscode.Uri) => {
-        const configuration = vscode.workspace.getConfiguration(
-          "static-server"
-        );
-        const port = configuration.get("port") || (await getPort()) || 1337;
-        const host = await ip.v4();
+    vscode.commands.registerCommand(Commands.Start, async (uri: vscode.Uri) => {
+      const configuration = vscode.workspace.getConfiguration("static-server");
+      const port = configuration.get("port") || (await getPort()) || 1337;
+      const host = await ip.v4();
 
-        const server = new StaticServer({
-          rootPath: uri.fsPath, // required, the root of the server file tree
-          port, // required, the port to listen
-          name: "vscode-static-server", // optional, will set "X-Powered-by" HTTP header
-          host: "0.0.0.0", // optional, defaults to any interface
-          cors: "*", // optional, defaults to undefined
-          followSymlink: true // optional, defaults to a 404 error
+      const server = new StaticServer({
+        rootPath: uri.fsPath, // required, the root of the server file tree
+        port, // required, the port to listen
+        name: "vscode-static-server", // optional, will set "X-Powered-by" HTTP header
+        host: "0.0.0.0", // optional, defaults to any interface
+        cors: "*", // optional, defaults to undefined
+        followSymlink: true // optional, defaults to a 404 error
+      });
+
+      await new Promise((resolve, reject) => {
+        server.start((err: Error) => {
+          err ? reject(err) : resolve();
         });
+      });
 
-        await new Promise((resolve, reject) => {
-          server.start((err: Error) => {
-            err ? reject(err) : resolve();
-          });
-        });
-
-        server.on("request", (req: any, res: any) => {
-          if (configuration.get("download")) {
-            res.setHeader("Content-disposition", contentDisposition(req.path));
-          }
-        });
-
-        await updateContext(uri.fsPath);
-
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
-
-        if (!workspaceFolder) {
-          return;
+      server.on("request", (req: any, res: any) => {
+        if (configuration.get("download")) {
+          res.setHeader("Content-disposition", contentDisposition(req.path));
         }
+      });
 
-        const relativePath = path.relative(
-          workspaceFolder.uri.fsPath,
-          uri.fsPath
-        );
+      await updateContext(uri.fsPath);
 
-        const fullUrl = "http://" + host + ":" + port;
+      const workspaceFolder = vscode.workspace.getWorkspaceFolder(uri);
 
-        vscode.window.showInformationMessage(
-          localize("info.server.on", relativePath, fullUrl)
-        );
-
-        currentServer = server;
-
-        statusbar.text = `$(radio-tower) ${localize(
-          "status.server.on"
-        )}: ${port}`;
-        statusbar.tooltip = localize("status.server.tooltip", fullUrl);
-        statusbar.show();
-        statusbar.command = "static-server.close";
+      if (!workspaceFolder) {
+        return;
       }
-    )
+
+      const relativePath = path.relative(
+        workspaceFolder.uri.fsPath,
+        uri.fsPath
+      );
+
+      const fullUrl = "http://" + host + ":" + port;
+
+      vscode.window.showInformationMessage(
+        localize("info.server.on", relativePath, fullUrl)
+      );
+
+      currentServer = server;
+
+      statusbar.text = `$(radio-tower) ${localize(
+        "status.server.on"
+      )}: ${port}`;
+      statusbar.tooltip = localize("status.server.tooltip", fullUrl);
+      statusbar.show();
+      statusbar.command = Commands.Close;
+    })
   );
 }
 
