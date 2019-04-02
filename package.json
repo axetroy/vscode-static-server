@@ -25,7 +25,7 @@
     "Other"
   ],
   "icon": "resources/icon.png",
-  "main": "./out/extension",
+  "main": "./out/index.js",
   "activationEvents": [
     "onCommand:static-server.serve"
   ],
