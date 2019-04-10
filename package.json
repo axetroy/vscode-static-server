@@ -112,19 +112,19 @@
     "publish": "npx vsce publish"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^11.10.4",
-    "@types/open": "^6.0.0",
-    "move-cli": "^1.2.1",
-    "rimraf": "^2.6.3",
-    "tslint": "^5.13.1",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.3333",
-    "vscode": "^1.1.30"
+    "@types/mocha": "5.2.6",
+    "@types/node": "11.13.2",
+    "@types/open": "6.1.0",
+    "move-cli": "1.2.1",
+    "rimraf": "2.6.3",
+    "tslint": "5.15.0",
+    "tslint-config-prettier": "1.18.0",
+    "typescript": "3.4.2",
+    "vscode": "1.1.33"
   },
   "dependencies": {
     "content-disposition": "^0.5.3",
-    "get-port": "^4.2.0",
+    "get-port": "^5.0.0",
     "internal-ip": "^4.2.0",
     "static-server": "^2.2.1",
     "vscode-nls-i18n": "^0.1.1"
