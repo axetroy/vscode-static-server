@@ -8,6 +8,11 @@
 
 An vscode extension to serve your static directory.
 
+## Feature
+
+- [x] Start a static server for a directory
+- [x] Localization support
+
 ## [CHANGELOG](https://github.com/axetroy/vscode-static-server/blob/master/CHANGELOG.md)
 
 ## Screenshot
