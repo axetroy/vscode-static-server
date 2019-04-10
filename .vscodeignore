@@ -9,3 +9,4 @@ tslint.json
 *.gif
 *.log
 node_modules
+renovate.json
