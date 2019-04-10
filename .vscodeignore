@@ -10,3 +10,4 @@ tslint.json
 *.log
 node_modules
 renovate.json
+screenshot/**

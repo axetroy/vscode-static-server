@@ -10,6 +10,12 @@ An vscode extension to serve your static directory.
 
 ## [CHANGELOG](https://github.com/axetroy/vscode-static-server/blob/master/CHANGELOG.md)
 
+## Screenshot
+
+![1](https://github.com/axetroy/vscode-static-server/raw/master/screenshot/1.png)
+![2](https://github.com/axetroy/vscode-static-server/raw/master/screenshot/2.png)
+
+
 ### 捐赠我
 
 如果你觉得这个项目能帮助到你，可以考虑 **支付宝扫码(或搜索 511118132)领红包** 支持我
