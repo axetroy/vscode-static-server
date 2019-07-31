@@ -120,7 +120,7 @@
     "tslint": "5.16.0",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.4.2",
-    "vscode": "1.1.35"
+    "vscode": "1.1.36"
   },
   "dependencies": {
     "content-disposition": "^0.5.3",
